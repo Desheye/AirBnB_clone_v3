@@ -82,12 +82,11 @@ class DBStorage:
     def count(self, cls=None):
         """ Count the number of objects in storage """
         if not cls:
-            every_instance_of_class = self.all()
-            return len(every_instance_of_class)
-        if cls in classes.values():
-            instance_of_fmr_class = self.all(cls)
-            return len(instance_of_fmr_class)
-        return 0
+            # Count all Objects
+            return len(self.all())
+
+        # Count objects of the specified class
+        return len(self.all(cls))
 
     def save(self):
         """commit all changes of the current database session"""
