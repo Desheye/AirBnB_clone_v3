@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Contains the FileStorage class
+contains the FileStorage class
 """
 
 import json
@@ -12,8 +12,15 @@ from models.review import Review
 from models.state import State
 from models.user import User
 
-classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
-           "Place": Place, "Review": Review, "State": State, "User": User}
+classes = {
+    "Amenity": Amenity,
+    "BaseModel": BaseModel,
+    "City": City,
+    "Place": Place,
+    "Review": Review,
+    "State": State,
+    "User": User
+}
 
 
 class FileStorage:
@@ -40,6 +47,37 @@ class FileStorage:
             key = obj.__class__.__name__ + "." + obj.id
             self.__objects[key] = obj
 
+    def get(self, cls, id):
+        """ Retrieve one object based on class and ID. """
+        if cls and id:
+            if cls in classes.values():
+                every_obj = self.all(cls)
+
+                for value in every_obj.values():
+                    if value.id == id:
+                        return value
+            return None
+        return None
+
+    def count(self, cls=None):
+        """
+        Count the number of objects in storage.
+
+        Args:
+            cls (str, optional): Class name. Defaults to None.
+
+        Returns:
+            int: Number of objects matching the given class.
+            If no class is provided, returns the count of all objects.
+        """
+        if not cls:
+            every_instance = self.all()
+            return len(every_instance)
+        if cls in classes.values():
+            every_fmr_class = self.all(cls)
+            return len(every_fmr_class)
+        return None
+
     def save(self):
         """serializes __objects to the JSON file (path: __file_path)"""
         json_objects = {}
@@ -55,7 +93,7 @@ class FileStorage:
                 jo = json.load(f)
             for key in jo:
                 self.__objects[key] = classes[jo[key]["__class__"]](**jo[key])
-        except:
+        except BaseException:
             pass
 
     def delete(self, obj=None):

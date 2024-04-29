@@ -16,8 +16,14 @@ import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-classes = {"Amenity": Amenity, "City": City,
-           "Place": Place, "Review": Review, "State": State, "User": User}
+classes = {
+    "Amenity": Amenity,
+    "City": City,
+    "Place": Place,
+    "Review": Review,
+    "State": State,
+    "User": User
+}
 
 
 class DBStorage:
@@ -32,11 +38,8 @@ class DBStorage:
         HBNB_MYSQL_HOST = getenv('HBNB_MYSQL_HOST')
         HBNB_MYSQL_DB = getenv('HBNB_MYSQL_DB')
         HBNB_ENV = getenv('HBNB_ENV')
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
-                                      format(HBNB_MYSQL_USER,
-                                             HBNB_MYSQL_PWD,
-                                             HBNB_MYSQL_HOST,
-                                             HBNB_MYSQL_DB))
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
+            HBNB_MYSQL_USER, HBNB_MYSQL_PWD, HBNB_MYSQL_HOST, HBNB_MYSQL_DB))
         if HBNB_ENV == "test":
             Base.metadata.drop_all(self.__engine)
 
@@ -54,6 +57,37 @@ class DBStorage:
     def new(self, obj):
         """add the object to the current database session"""
         self.__session.add(obj)
+
+    def get(self, cls, id):
+        """
+        Retrieve one object from the database
+        on class and ID.
+
+        Args:
+         cls (str): Class name.
+         id (str): Object ID.
+
+        Returns:
+         obj: Object if found, None otherwise.
+
+        """
+        if cls and id:
+            if cls in classes.values() and isinstance(id, str):
+                every_obj = self.all(cls)
+                for key, value in every_obj.items():
+                    if key.split('.')[1] == id:
+                        return value
+        return None
+
+    def count(self, cls=None):
+        """ Count the number of objects in storage """
+        if not cls:
+            every_instance_of_class = self.all()
+            return len(every_instance_of_class)
+        if cls in classes.values():
+            instance_of_fmr_class = self.all(cls)
+            return len(instance_of_fmr_class)
+        return 0
 
     def save(self):
         """commit all changes of the current database session"""

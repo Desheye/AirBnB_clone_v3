@@ -49,9 +49,9 @@ class TestFileStorageDocs(unittest.TestCase):
     def test_pep8_conformance_test_file_storage(self):
         """Test tests/test_models/test_file_storage.py conforms to PEP8."""
         pep8s = pep8.StyleGuide(quiet=True)
-        result = pep8s.check_files(
-            ['tests/test_models/test_engine/\
-test_file_storage.py'])
+        result = pep8s.check_files([
+            'tests/test_models/test_engine/test_file_storage.py'
+        ])
         self.assertEqual(result.total_errors, 0,
                          "Found code style errors (and warnings).")
 
@@ -127,3 +127,42 @@ class TestFileStorage(unittest.TestCase):
         with open("file.json", "r") as f:
             js = f.read()
         self.assertEqual(json.loads(string), json.loads(js))
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_get(self):
+        """Test the get method"""
+        storage = FileStorage()
+
+        storage.reload()
+        state_data = {"name": "Abeokuta"}
+        state_instance = State(**state_data)
+
+        retrieved_state = storage.get(State, state_instance.id)
+        self.assertEqual(state_instance, retrieved_state)
+        false_state_id = storage.get(State, "False_id")
+
+        self.assertEqual(false_state_id, None)
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_count(self):
+        """ Test the count method """
+        storage = FileStorage()
+        storage.reload()
+        state_data = {"name": "Oshogbo"}
+        state_instance = State(**state_data)
+        storage.new(state_instance)
+
+        city_data = {"name": "Smiley", "state_id": state_instance.id}
+
+        city_instance = City(**city_data)
+        storage.new(city_instance)
+        storage.save()
+
+        state_counts = storage.count(State)
+        self.assertEqual(state_counts, len(storage.all(State)))
+
+        every_count = storage.count()
+        self.assertEqual(every_count, len(storage.all()))
+
+    if __name__ == "__main__":
+        unittest.main()
