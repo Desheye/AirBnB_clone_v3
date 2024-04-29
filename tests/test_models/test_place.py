@@ -10,11 +10,13 @@ from models import place
 from models.base_model import BaseModel
 import pep8
 import unittest
+
 Place = place.Place
 
 
 class TestPlaceDocs(unittest.TestCase):
     """Tests to check the documentation and style of Place class"""
+
     @classmethod
     def setUpClass(cls):
         """Set up for the doc tests"""
@@ -36,29 +38,28 @@ class TestPlaceDocs(unittest.TestCase):
 
     def test_place_module_docstring(self):
         """Test for the place.py module docstring"""
-        self.assertIsNot(place.__doc__, None,
-                         "place.py needs a docstring")
-        self.assertTrue(len(place.__doc__) >= 1,
-                        "place.py needs a docstring")
+        self.assertIsNot(place.__doc__, None, "place.py needs a docstring")
+        self.assertTrue(len(place.__doc__) >= 1, "place.py needs a docstring")
 
     def test_place_class_docstring(self):
         """Test for the Place class docstring"""
-        self.assertIsNot(Place.__doc__, None,
-                         "Place class needs a docstring")
-        self.assertTrue(len(Place.__doc__) >= 1,
-                        "Place class needs a docstring")
+        self.assertIsNot(Place.__doc__, None, "Place class needs a docstring")
+        self.assertTrue(
+            len(Place.__doc__) >= 1, "Place class needs a docstring")
 
     def test_place_func_docstrings(self):
         """Test for the presence of docstrings in Place methods"""
         for func in self.place_f:
             self.assertIsNot(func[1].__doc__, None,
                              "{:s} method needs a docstring".format(func[0]))
-            self.assertTrue(len(func[1].__doc__) >= 1,
-                            "{:s} method needs a docstring".format(func[0]))
+            self.assertTrue(
+                len(func[1].__doc__) >= 1,
+                "{:s} method needs a docstring".format(func[0]))
 
 
 class TestPlace(unittest.TestCase):
     """Test the Place class"""
+
     def test_is_subclass(self):
         """Test that Place is a subclass of BaseModel"""
         place = Place()
@@ -178,7 +179,7 @@ class TestPlace(unittest.TestCase):
         self.assertEqual(type(new_d), dict)
         self.assertFalse("_sa_instance_state" in new_d)
         for attr in p.__dict__:
-            if attr is not "_sa_instance_state":
+            if attr != "_sa_instance_state":
                 self.assertTrue(attr in new_d)
         self.assertTrue("__class__" in new_d)
 
