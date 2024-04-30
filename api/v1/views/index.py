@@ -9,6 +9,7 @@ from api.v1.views import app_views  # Import app_views here
 
 from models import storage
 
+
 @app_views.route("/status", methods=['GET'], strict_slashes=False)
 def get_status():
     """
@@ -23,6 +24,7 @@ def get_status():
     response.status_code = 200
 
     return response
+
 
 @app_views.route("/stats", methods=['GET'], strict_slashes=False)
 def get_stats():

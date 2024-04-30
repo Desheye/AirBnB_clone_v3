@@ -1,4 +1,4 @@
- #!/usr/bin/python3
+#!/usr/bin/python3
 
 """
 Module for managing amenity operations.
@@ -33,8 +33,8 @@ def retrieve_amenity(amenity_id):
         return abort(404)
 
 
-@app_views.route('/amenities/<amenity_id>', 
-        methods=["DELETE"], strict_slashes=False)
+@app_views.route('/amenities/<amenity_id>',
+                 methods=["DELETE"], strict_slashes=False)
 def delete_amenity(amenity_id):
     """
     Deletes an amenity object by its ID.
@@ -86,8 +86,8 @@ def add_amenity():
     return jsonify(amenity.to_dict()), 200
 
 
-@app_views.route('/amenities/<amenity_id>', 
-        methods=["PUT"], strict_slashes=False)
+@app_views.route('/amenities/<amenity_id>',
+                 methods=["PUT"], strict_slashes=False)
 def update_amenity(amenity_id):
     """
     Updates an amenity object by its ID.
