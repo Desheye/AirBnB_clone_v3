@@ -5,11 +5,11 @@ Module for managing place operations.
 """
 
 from flask import jsonify, abort, request
-from models.city import City
+# from models.city import City
 from models.place import Place
-from models.user import User
-from models import storage
-from api.v1.views import app_views
+# from models.user import User
+# from models import storage
+from api.v1.views import app_views, storage
 
 
 @app_views.route('/cities/<city_id>/places', methods=['GET'],

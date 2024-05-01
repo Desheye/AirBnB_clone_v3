@@ -6,8 +6,8 @@ Module for managing amenity operations.
 
 from flask import jsonify, abort, request
 from models.amenity import Amenity
-from models import storage
-from api.v1.views import app_views
+# from models import storage
+from api.v1.views import app_views, storage
 
 
 @app_views.route('/amenities', strict_slashes=False)

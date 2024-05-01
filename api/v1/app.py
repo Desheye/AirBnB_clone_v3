@@ -7,8 +7,8 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 from os import getenv
 
-from api.v1.views import app_views
 from models import storage
+from api.v1.views import app_views  # Import app_views here
 
 
 app = Flask(__name__)
@@ -16,7 +16,6 @@ app = Flask(__name__)
 # Enable Cross-Origin Resource Sharing (CORS) for all origins
 CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
 
-# Register the Blueprint containing API routes and views
 app.register_blueprint(app_views)
 
 
@@ -45,5 +44,11 @@ def handle_404_error(exception):
 
 
 if __name__ == "__main__":
+    # Import the Blueprint containing API routes and views
+    # from api.v1.views import app_views
+
+    # Register the Blueprint
+    # app.register_blueprint(app_views)
+
     # Run the Flask application with host and port specified in environment
     app.run(getenv("HBNB_API_HOST"), getenv("HBNB_API_PORT"))
